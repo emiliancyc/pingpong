@@ -1,0 +1,57 @@
+aplikacja
+program
+proces
+wątek - kod wykonujący się równolegle z innymi współdzieląc przestrzeń procesu
+wątek odklejony (detached) - działa kiedy wątek głowny zostanie zakończony
+
+
+void foo(){
+printf("Thread");
+};
+
+boost::thread t(foo);
+t.join();
+
+grupa wątków - złączone w grupę wątki statrujące i kończące w tym samym czasie
+pula wątków - grupa wątków wykonująca to samo przetwarzanie
+
+sekcja krytyczna - miejsce w kodzie gdzie w danym momencie może wejść tylko jeden wątek
+powinna być jak nakrótsza
+
+transakcja - musi przejść cała, a jeśli nie to musi odwrócić zmiany
+
+synchronizacja międzywątkowa: bariera, muteksy, zmienne warunkowe
+zmienne warunkowe pthread_cond służące do notyfikacji, pracuje zawsze w parze z mutexem
+wysyła sygnał do innego wątku
+
+algorytm dekkera i dijkstry
+
+semafory binarne i zliczaj≤ące (międzyprocesowe)
+
+nie używać pthread_cancel
+
+fork kopiuje tylko ten wątek, który go wywołał i globalscope
+POSIX 1c
+
+exec zastępuje wszystko
+
+mutexy!
+
+pthread rw lock - mutex w trybie  zapis/odczyt, można go modyfikować w trybie read (wiele watkow), rw (jeden wątek, inne musza zwolnic)
+
+wykorzystać pthread_cond_timedwait lub semafory
+
+
+\ZADANIE\
+dwa wątki + main
+wypisują naprzemiennie PING PONG 
+kody do repo
+ilość wyświetleń zgodna z zadanym parametrem w programie
+
+błędy:
+mutexy powinny być prywatne
+deadlock (odwrócenie kolejności blokowania mutexów)
+
+mutex, conditional i while ZAWSZE
+
+spurious wake up
