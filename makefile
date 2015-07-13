@@ -17,7 +17,7 @@ CC = gcc
 CFLAGS = -Wall -g
 LDFLAGS = -lpthread
 SOURCES = src/main.c
-NAME = zadanie_exec
+NAME = pingpong
 #######################################################
 ##########        END User part              ##########
 #######################################################
