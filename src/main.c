@@ -8,38 +8,49 @@
 
 pthread_mutex_t MTX=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t COND=PTHREAD_COND_INITIALIZER;
-bool PRINT = false;
+bool IS_PING = true;
 int count = 0;
 
 
 
 void* ping(void* p){
+
+
+	int i = count;
+	for (; i > 0; --i) {
 	pthread_mutex_lock(&MTX);
 
-		while(!PRINT){
+		while(!IS_PING){
 			pthread_cond_wait(&COND,&MTX);
 		}
 
 		printf("PING\n");
+		IS_PING = false;
 		pthread_cond_signal(&COND);
 		pthread_mutex_unlock(&MTX);
-		PRINT=true;
+	}
+
 
 
 }
 
 
 void* pong(void* p){
+	int i = count;
+		for (; i > 0; --i) {
 	pthread_mutex_lock(&MTX);
-		while(!PRINT){
+		while(IS_PING){
 			pthread_cond_wait(&COND,&MTX);
 		}
 
-		printf("PONG\n");
+
+		printf("\tPONG\n");
+		IS_PING = true;
 		pthread_cond_signal(&COND);
 		pthread_mutex_unlock(&MTX);
 		//PRINT=true;
 
+		}
 
 }
 
@@ -61,18 +72,10 @@ int main(int argc, char **argv){
 
 	pthread_create(&thread1_id,0,ping,0);
 	pthread_create(&thread2_id,0,pong,0);
-	sleep(1);
-	//for
-	//pthread_mutex_lock(&MTX);
-	PRINT=true;
-	pthread_cond_signal(&COND);
-	//pthread_mutex_unlock(&MTX);
-	int ret1, ret2;
-	while(1){
-	pthread_join(thread1_id, &ret1);
-	pthread_join(thread2_id, &ret2);
-	count--;
-	}
+	pthread_join(thread1_id, 0);
+	pthread_join(thread2_id, 0);
+	//count--;
+	//}
 
 	return 0;
 	}
